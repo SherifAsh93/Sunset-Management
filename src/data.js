@@ -34,7 +34,7 @@ export const initialPeople = [
   { id: 33, name: "محمود فؤاد", mobile: "01010645989", direction: "بحري غربي" },
   { id: 34, name: "علاء الدين", mobile: "0107690005", direction: "قبلي شرقي" },
   { id: 35, name: "محمود سليم", mobile: "0109005486", direction: "قبلي غربي" },
-  { id: 36, name: "أحمد فتحي सعيद", mobile: "0101961090", direction: "بحري شرقي" },
+  { id: 36, name: "أحمد فتحي سعيد", mobile: "0101961090", direction: "بحري شرقي" },
   { id: 37, name: "قاسم إبراهيم", mobile: "0106708542", direction: "بحري غربي" },
   { id: 38, name: "السيد السحار", mobile: "0102134493", direction: "بحري شرقي" },
   { id: 39, name: "أحمد سيد", mobile: "0101036168", direction: "بحري غربي" },

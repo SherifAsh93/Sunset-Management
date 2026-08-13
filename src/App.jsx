@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Phone, MapPin } from "lucide-react";
+import { Search, Plus, Phone, MapPin, Users } from "lucide-react";
 import { initialPeople } from "./data";
 import PersonModal from "./components/PersonModal";
 
@@ -37,6 +37,10 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 pb-28">
       <header className="sticky top-0 z-10 bg-orange-500 px-4 pb-4 pt-6 shadow-md">
         <h1 className="mb-4 text-center text-3xl font-extrabold text-white">دليل الأرقام</h1>
+        <div className="mb-4 flex items-center justify-center gap-2 rounded-2xl bg-blue-600 py-3.5 text-lg font-bold text-white shadow-sm">
+          <Users size={22} />
+          إجمالي عدد السكان: {people.length}
+        </div>
         <div className="relative">
           <Search className="absolute top-1/2 right-4 -translate-y-1/2 text-slate-400" size={22} />
           <input
