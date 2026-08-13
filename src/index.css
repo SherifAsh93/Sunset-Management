@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Cairo", system-ui, sans-serif;
+  background-color: #f5f4f2;
+}
