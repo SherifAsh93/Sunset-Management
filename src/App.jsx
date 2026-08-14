@@ -35,9 +35,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-28">
-      <header className="sticky top-0 z-10 bg-orange-500 px-4 pb-4 pt-6 shadow-md">
-        <h1 className="mb-4 text-center text-3xl font-extrabold text-white">دليل الأرقام</h1>
-        <div className="mb-4 flex items-center justify-center gap-2 rounded-2xl bg-blue-600 py-3.5 text-lg font-bold text-white shadow-sm">
+      <header className="sticky top-0 z-10 bg-teal-600 px-4 pb-4 pt-6 shadow-md">
+        <h1 className="mb-4 text-center text-3xl font-extrabold text-white">Sunset</h1>
+        <div className="mb-4 flex items-center justify-center gap-2 rounded-2xl bg-sky-400 py-3.5 text-lg font-bold text-white shadow-sm">
           <Users size={22} />
           إجمالي عدد السكان: {people.length}
         </div>
@@ -84,7 +84,7 @@ export default function App() {
 
       <button
         onClick={() => setModal({ mode: "add" })}
-        className="fixed bottom-6 end-6 z-20 flex h-16 w-16 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg transition hover:bg-orange-600 active:scale-95"
+        className="fixed bottom-6 end-6 z-20 flex h-16 w-16 items-center justify-center rounded-full bg-teal-600 text-white shadow-lg transition hover:bg-teal-700 active:scale-95"
         aria-label="إضافة شخص جديد"
       >
         <Plus size={32} />
