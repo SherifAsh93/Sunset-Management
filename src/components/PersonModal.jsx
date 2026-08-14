@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Trash2 } from "lucide-react";
 
 export default function PersonModal({ mode, person, onClose, onSave, onDelete }) {
@@ -7,6 +7,13 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
   const [building, setBuilding] = useState(person?.building?.toString() ?? "");
   const [street, setStreet] = useState(person?.street?.toString() ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+  useEffect(() => {
+    setName(person?.name ?? "");
+    setMobile(person?.mobile ?? "");
+    setBuilding(person?.building?.toString() ?? "");
+    setStreet(person?.street?.toString() ?? "");
+  }, [person]);
 
   const isValid = name.trim() !== "";
 
