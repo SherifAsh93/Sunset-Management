@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Search, Plus, Phone, MapPin, Users } from "lucide-react";
 import { initialPeople } from "./data";
 import PersonModal from "./components/PersonModal";
+import Gallery, { compoundImages } from "./components/Gallery";
 
 export default function App() {
   const [people, setPeople] = useState(initialPeople);
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(null); // { mode: 'add' | 'edit', person? }
+  const [galleryIndex, setGalleryIndex] = useState(null);
 
   const term = search.trim();
   const filteredPeople = term
@@ -52,6 +54,14 @@ export default function App() {
           />
         </div>
       </header>
+
+      <Gallery
+        images={compoundImages}
+        activeIndex={galleryIndex}
+        onOpen={setGalleryIndex}
+        onClose={() => setGalleryIndex(null)}
+        onNavigate={setGalleryIndex}
+      />
 
       <main className="mx-auto max-w-2xl px-4 pt-4">
         {filteredPeople.length === 0 ? (
