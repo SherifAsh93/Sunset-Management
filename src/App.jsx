@@ -7,19 +7,30 @@ import Gallery, { compoundImages } from "./components/Gallery";
 export default function App() {
   const [people, setPeople] = useState(initialPeople);
   const [search, setSearch] = useState("");
+  const [buildingFilter, setBuildingFilter] = useState("");
+  const [streetFilter, setStreetFilter] = useState("");
   const [modal, setModal] = useState(null); // { mode: 'add' | 'edit', person? }
   const [galleryIndex, setGalleryIndex] = useState(null);
 
+  const buildingOptions = [...new Set(people.map((p) => p.building).filter((b) => b != null))].sort(
+    (a, b) => a - b
+  );
+  const streetOptions = [...new Set(people.map((p) => p.street).filter((s) => s != null))].sort(
+    (a, b) => a - b
+  );
+
   const term = search.trim();
-  const filteredPeople = term
-    ? people.filter(
-        (p) =>
-          p.name.includes(term) ||
-          (p.mobile ?? "").includes(term) ||
-          String(p.building ?? "").includes(term) ||
-          String(p.street ?? "").includes(term)
-      )
-    : people;
+  const filteredPeople = people.filter((p) => {
+    const matchesSearch = term
+      ? p.name.includes(term) ||
+        (p.mobile ?? "").includes(term) ||
+        String(p.building ?? "").includes(term) ||
+        String(p.street ?? "").includes(term)
+      : true;
+    const matchesBuilding = buildingFilter ? String(p.building) === buildingFilter : true;
+    const matchesStreet = streetFilter ? String(p.street) === streetFilter : true;
+    return matchesSearch && matchesBuilding && matchesStreet;
+  });
 
   function handleSave(personData) {
     if (modal.mode === "add") {
@@ -55,6 +66,32 @@ export default function App() {
             placeholder="بحث بالاسم أو الرقم أو العمارة أو الشارع..."
             className="w-full rounded-2xl border-0 bg-white py-3.5 pr-12 pl-4 text-lg text-slate-800 shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-200"
           />
+        </div>
+        <div className="mt-3 flex gap-3">
+          <select
+            value={buildingFilter}
+            onChange={(e) => setBuildingFilter(e.target.value)}
+            className="flex-1 rounded-2xl border-0 bg-white py-3 px-4 text-base font-semibold text-slate-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-200"
+          >
+            <option value="">الكل (العمارة)</option>
+            {buildingOptions.map((b) => (
+              <option key={b} value={b}>
+                عمارة {b}
+              </option>
+            ))}
+          </select>
+          <select
+            value={streetFilter}
+            onChange={(e) => setStreetFilter(e.target.value)}
+            className="flex-1 rounded-2xl border-0 bg-white py-3 px-4 text-base font-semibold text-slate-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-200"
+          >
+            <option value="">الكل (الشارع)</option>
+            {streetOptions.map((s) => (
+              <option key={s} value={s}>
+                شارع {s}
+              </option>
+            ))}
+          </select>
         </div>
       </header>
 
