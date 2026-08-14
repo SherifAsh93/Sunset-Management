@@ -1,8 +1,12 @@
-import { useState } from "react";
-import { Search, Plus, Phone, Building2, Map, Users } from "lucide-react";
+import { useRef, useState } from "react";
+import { Search, Plus, Phone, Building2, Map, Users, Lock, Unlock, X } from "lucide-react";
 import { initialPeople } from "./data";
 import PersonModal from "./components/PersonModal";
 import Gallery, { compoundImages } from "./components/Gallery";
+
+const PRIVACY_PASSWORD = "12311";
+const NAME_MASK = "•••••• ••••••";
+const MOBILE_MASK = "•••••••••••";
 
 export default function App() {
   const [people, setPeople] = useState(initialPeople);
@@ -11,6 +15,45 @@ export default function App() {
   const [streetFilter, setStreetFilter] = useState("");
   const [modal, setModal] = useState(null); // { mode: 'add' | 'edit', person? }
   const [galleryIndex, setGalleryIndex] = useState(null);
+  const [unlocked, setUnlocked] = useState(false);
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [toast, setToast] = useState(null);
+  const toastTimer = useRef(null);
+
+  function showToast(message) {
+    setToast(message);
+    window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 2500);
+  }
+
+  function handleUnlockSubmit(e) {
+    e.preventDefault();
+    if (passwordInput === PRIVACY_PASSWORD) {
+      setUnlocked(true);
+      setShowPasswordField(false);
+      setPasswordInput("");
+    } else {
+      showToast("كلمة المرور غير صحيحة");
+      setPasswordInput("");
+    }
+  }
+
+  function handleCardClick(person) {
+    if (!unlocked) {
+      showToast("أدخل كلمة المرور الصحيحة لتعديل البيانات");
+      return;
+    }
+    setModal({ mode: "edit", person });
+  }
+
+  function handleAddClick() {
+    if (!unlocked) {
+      showToast("أدخل كلمة المرور الصحيحة لإضافة بيانات جديدة");
+      return;
+    }
+    setModal({ mode: "add" });
+  }
 
   const buildingOptions = [...new Set(people.map((p) => p.building).filter((b) => b != null))].sort(
     (a, b) => a - b
@@ -52,7 +95,51 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 pb-28">
       <header className="sticky top-0 z-10 bg-teal-600 px-4 pb-4 pt-6 shadow-md">
-        <h1 className="mb-4 text-center text-3xl font-extrabold text-white">Sunset</h1>
+        <h1 className="mb-3 text-center text-3xl font-extrabold text-white">Sunset</h1>
+        <div className="mb-4 flex justify-center">
+          {unlocked ? (
+            <div className="flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-1.5 text-sm font-bold text-white shadow-sm">
+              <Unlock size={16} />
+              البيانات ظاهرة
+            </div>
+          ) : showPasswordField ? (
+            <form onSubmit={handleUnlockSubmit} className="flex items-center gap-2">
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="كلمة المرور"
+                autoFocus
+                className="w-36 rounded-full border-0 bg-white py-1.5 px-4 text-sm text-slate-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-200"
+              />
+              <button
+                type="submit"
+                className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-bold text-white transition hover:bg-orange-600"
+              >
+                دخول
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPasswordField(false);
+                  setPasswordInput("");
+                }}
+                className="rounded-full p-1.5 text-white/80 transition hover:text-white"
+                aria-label="إلغاء"
+              >
+                <X size={16} />
+              </button>
+            </form>
+          ) : (
+            <button
+              onClick={() => setShowPasswordField(true)}
+              className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-sm font-bold text-white shadow-sm transition hover:bg-white/25"
+            >
+              <Lock size={16} />
+              البيانات مخفية - إدخال كلمة المرور
+            </button>
+          )}
+        </div>
         <div className="mb-4 flex items-center justify-center gap-2 rounded-2xl bg-sky-400 py-3.5 text-lg font-bold text-white shadow-sm">
           <Users size={22} />
           إجمالي عدد السكان: {people.length}
@@ -111,15 +198,25 @@ export default function App() {
             {filteredPeople.map((person) => (
               <li key={person.id}>
                 <button
-                  onClick={() => setModal({ mode: "edit", person })}
-                  className="w-full rounded-2xl bg-white p-4 text-right shadow-sm transition active:scale-[0.98] active:bg-slate-50"
+                  onClick={() => handleCardClick(person)}
+                  className={`w-full rounded-2xl bg-white p-4 text-right shadow-sm transition ${
+                    unlocked ? "active:scale-[0.98] active:bg-slate-50" : "cursor-not-allowed"
+                  }`}
                 >
-                  <p className="text-xl font-bold text-slate-800">{person.name}</p>
+                  <p
+                    className={`text-xl font-bold text-slate-800 ${
+                      unlocked ? "" : "select-none blur-md"
+                    }`}
+                  >
+                    {unlocked ? person.name : NAME_MASK}
+                  </p>
                   <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-slate-500">
                     {person.mobile && (
                       <span className="flex items-center gap-1.5" dir="ltr">
                         <Phone size={16} className="shrink-0" />
-                        {person.mobile}
+                        <span className={unlocked ? "" : "select-none blur-md"}>
+                          {unlocked ? person.mobile : MOBILE_MASK}
+                        </span>
                       </span>
                     )}
                     {person.building != null && (
@@ -143,12 +240,18 @@ export default function App() {
       </main>
 
       <button
-        onClick={() => setModal({ mode: "add" })}
+        onClick={handleAddClick}
         className="fixed bottom-6 end-6 z-20 flex h-16 w-16 items-center justify-center rounded-full bg-teal-600 text-white shadow-lg transition hover:bg-teal-700 active:scale-95"
         aria-label="إضافة شخص جديد"
       >
         <Plus size={32} />
       </button>
+
+      {toast && (
+        <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 rounded-xl bg-red-500 px-5 py-3 text-center text-sm font-bold text-white shadow-lg">
+          {toast}
+        </div>
+      )}
 
       {modal && (
         <PersonModal
