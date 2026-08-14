@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Phone, MapPin, Users } from "lucide-react";
+import { Search, Plus, Phone, Building2, Map, Users } from "lucide-react";
 import { initialPeople } from "./data";
 import PersonModal from "./components/PersonModal";
 import Gallery, { compoundImages } from "./components/Gallery";
@@ -14,7 +14,10 @@ export default function App() {
   const filteredPeople = term
     ? people.filter(
         (p) =>
-          p.name.includes(term) || p.mobile.includes(term) || p.direction.includes(term)
+          p.name.includes(term) ||
+          (p.mobile ?? "").includes(term) ||
+          String(p.building ?? "").includes(term) ||
+          String(p.street ?? "").includes(term)
       )
     : people;
 
@@ -49,7 +52,7 @@ export default function App() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="بحث بالاسم أو الرقم أو الجهة..."
+            placeholder="بحث بالاسم أو الرقم أو العمارة أو الشارع..."
             className="w-full rounded-2xl border-0 bg-white py-3.5 pr-12 pl-4 text-lg text-slate-800 shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-200"
           />
         </div>
@@ -76,14 +79,24 @@ export default function App() {
                 >
                   <p className="text-xl font-bold text-slate-800">{person.name}</p>
                   <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-slate-500">
-                    <span className="flex items-center gap-1.5" dir="ltr">
-                      <Phone size={16} className="shrink-0" />
-                      {person.mobile}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <MapPin size={16} className="shrink-0" />
-                      {person.direction}
-                    </span>
+                    {person.mobile && (
+                      <span className="flex items-center gap-1.5" dir="ltr">
+                        <Phone size={16} className="shrink-0" />
+                        {person.mobile}
+                      </span>
+                    )}
+                    {person.building != null && (
+                      <span className="flex items-center gap-1.5">
+                        <Building2 size={16} className="shrink-0" />
+                        عمارة {person.building}
+                      </span>
+                    )}
+                    {person.street != null && (
+                      <span className="flex items-center gap-1.5">
+                        <Map size={16} className="shrink-0" />
+                        شارع {person.street}
+                      </span>
+                    )}
                   </div>
                 </button>
               </li>

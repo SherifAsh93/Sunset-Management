@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { X, Trash2 } from "lucide-react";
 
-const DIRECTIONS = ["بحري شرقي", "بحري غربي", "قبلي شرقي", "قبلي غربي"];
-
 export default function PersonModal({ mode, person, onClose, onSave, onDelete }) {
   const [name, setName] = useState(person?.name ?? "");
   const [mobile, setMobile] = useState(person?.mobile ?? "");
-  const [direction, setDirection] = useState(person?.direction ?? DIRECTIONS[0]);
+  const [building, setBuilding] = useState(person?.building?.toString() ?? "");
+  const [street, setStreet] = useState(person?.street?.toString() ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
-  const isValid = name.trim() !== "" && mobile.trim() !== "";
+  const isValid = name.trim() !== "";
 
   function handleSave() {
     if (!isValid) return;
@@ -17,7 +16,8 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
       id: person?.id,
       name: name.trim(),
       mobile: mobile.trim(),
-      direction,
+      building: building.trim() === "" ? undefined : Number(building),
+      street: street.trim() === "" ? undefined : Number(street),
     });
   }
 
@@ -67,19 +67,29 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
             />
           </div>
 
-          <div>
-            <label className="mb-1 block text-lg font-semibold text-slate-600">الجهة</label>
-            <select
-              value={direction}
-              onChange={(e) => setDirection(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-lg text-slate-800 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
-            >
-              {DIRECTIONS.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="mb-1 block text-lg font-semibold text-slate-600">رقم العمارة</label>
+              <input
+                type="number"
+                dir="ltr"
+                value={building}
+                onChange={(e) => setBuilding(e.target.value)}
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                placeholder="مثال: 7"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="mb-1 block text-lg font-semibold text-slate-600">الشارع</label>
+              <input
+                type="number"
+                dir="ltr"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                placeholder="مثال: 133"
+              />
+            </div>
           </div>
         </div>
 
