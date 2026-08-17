@@ -239,6 +239,20 @@ export default function App() {
         )}
       </main>
 
+      <footer className="flex justify-center py-6">
+        <a
+          href="https://webistrydev.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 rounded-full px-3 py-1.5 text-slate-400 transition hover:text-slate-600"
+        >
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-500">
+            W
+          </span>
+          <span className="text-sm font-medium tracking-wide">WebistryDev</span>
+        </a>
+      </footer>
+
       <button
         onClick={handleAddClick}
         className="fixed bottom-6 end-6 z-20 flex h-16 w-16 items-center justify-center rounded-full bg-teal-600 text-white shadow-lg transition hover:bg-teal-700 active:scale-95"
