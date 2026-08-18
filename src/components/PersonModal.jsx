@@ -17,6 +17,13 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
 
   const isValid = name.trim() !== "";
 
+  function handleFocusScroll(e) {
+    const el = e.target;
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  }
+
   function handleSave() {
     if (!isValid) return;
     onSave({
@@ -34,7 +41,7 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-t-3xl bg-white p-6 shadow-xl sm:rounded-3xl"
+        className="flex max-h-[85dvh] w-full max-w-md flex-col overflow-y-auto rounded-t-3xl bg-white p-6 shadow-xl sm:rounded-3xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-6 flex items-center justify-between">
@@ -57,7 +64,8 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-800 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
+              onFocus={handleFocusScroll}
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-lg text-slate-800 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
               placeholder="اكتب الاسم"
             />
           </div>
@@ -69,7 +77,8 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
               dir="ltr"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
+              onFocus={handleFocusScroll}
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
               placeholder="01000000000"
             />
           </div>
@@ -82,7 +91,8 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
                 dir="ltr"
                 value={building}
                 onChange={(e) => setBuilding(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                onFocus={handleFocusScroll}
+                className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
                 placeholder="مثال: 7"
               />
             </div>
@@ -93,7 +103,8 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
                 dir="ltr"
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                onFocus={handleFocusScroll}
+                className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-lg text-slate-800 text-right focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200"
                 placeholder="مثال: 133"
               />
             </div>

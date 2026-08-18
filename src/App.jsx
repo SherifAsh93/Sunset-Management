@@ -92,10 +92,25 @@ export default function App() {
     setModal(null);
   }
 
+  function handleFocusScroll(e) {
+    const el = e.target;
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 pb-28">
-      <header className="sticky top-0 z-10 bg-teal-600 px-4 pb-4 pt-6 shadow-md">
-        <h1 className="mb-3 text-center text-3xl font-extrabold text-white">Sunset</h1>
+    <div className="min-h-dvh bg-slate-50 pb-28">
+      <header className="sticky top-0 z-10 bg-gradient-to-b from-blue-900 via-sky-700 to-sky-500 px-4 pb-14 pt-5 shadow-lg">
+        <div className="mb-4 flex justify-end">
+          <div dir="ltr" className="flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-lg font-black text-white ring-1 ring-white/20">
+              S
+            </span>
+            <span className="text-xl font-extrabold tracking-tight text-white">Sunset</span>
+          </div>
+        </div>
+
         <div className="mb-4 flex justify-center">
           {unlocked ? (
             <div className="flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-1.5 text-sm font-bold text-white shadow-sm">
@@ -108,6 +123,7 @@ export default function App() {
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
+                onFocus={handleFocusScroll}
                 placeholder="كلمة المرور"
                 autoFocus
                 className="w-36 rounded-full border-0 bg-white py-1.5 px-4 text-sm text-slate-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-200"
@@ -140,47 +156,56 @@ export default function App() {
             </button>
           )}
         </div>
-        <div className="mb-4 flex items-center justify-center gap-2 rounded-2xl bg-sky-400 py-3.5 text-lg font-bold text-white shadow-sm">
-          <Users size={22} />
+
+        <div className="flex items-center justify-center gap-3 rounded-3xl bg-gradient-to-l from-sky-400 to-cyan-300 py-4 text-lg font-bold text-white shadow-lg shadow-sky-950/30">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/25">
+            <Users size={20} />
+          </span>
           إجمالي عدد السكان: {people.length}
         </div>
-        <div className="relative">
-          <Search className="absolute top-1/2 right-4 -translate-y-1/2 text-slate-400" size={22} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="بحث بالاسم أو الرقم أو العمارة أو الشارع..."
-            className="w-full rounded-2xl border-0 bg-white py-3.5 pr-12 pl-4 text-lg text-slate-800 shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-200"
-          />
-        </div>
-        <div className="mt-3 flex gap-3">
-          <select
-            value={buildingFilter}
-            onChange={(e) => setBuildingFilter(e.target.value)}
-            className="flex-1 rounded-2xl border-0 bg-white py-3 px-4 text-base font-semibold text-slate-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-200"
-          >
-            <option value="">الكل (العمارة)</option>
-            {buildingOptions.map((b) => (
-              <option key={b} value={b}>
-                عمارة {b}
-              </option>
-            ))}
-          </select>
-          <select
-            value={streetFilter}
-            onChange={(e) => setStreetFilter(e.target.value)}
-            className="flex-1 rounded-2xl border-0 bg-white py-3 px-4 text-base font-semibold text-slate-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-200"
-          >
-            <option value="">الكل (الشارع)</option>
-            {streetOptions.map((s) => (
-              <option key={s} value={s}>
-                شارع {s}
-              </option>
-            ))}
-          </select>
-        </div>
       </header>
+
+      <div className="relative z-20 mx-auto -mt-8 max-w-2xl px-4">
+        <div className="rounded-3xl border border-slate-100 bg-white p-4 shadow-xl shadow-slate-900/10">
+          <div className="relative">
+            <Search className="absolute top-1/2 right-4 -translate-y-1/2 text-slate-400" size={22} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={handleFocusScroll}
+              placeholder="بحث بالاسم أو الرقم أو العمارة أو الشارع..."
+              className="w-full rounded-2xl border-0 bg-slate-50 py-3.5 pr-12 pl-4 text-lg text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-200"
+            />
+          </div>
+          <div className="mt-3 flex gap-3">
+            <select
+              value={buildingFilter}
+              onChange={(e) => setBuildingFilter(e.target.value)}
+              className="flex-1 rounded-2xl border-0 bg-slate-50 py-3 px-4 text-base font-semibold text-slate-800 focus:outline-none focus:ring-4 focus:ring-orange-200"
+            >
+              <option value="">الكل (العمارة)</option>
+              {buildingOptions.map((b) => (
+                <option key={b} value={b}>
+                  عمارة {b}
+                </option>
+              ))}
+            </select>
+            <select
+              value={streetFilter}
+              onChange={(e) => setStreetFilter(e.target.value)}
+              className="flex-1 rounded-2xl border-0 bg-slate-50 py-3 px-4 text-base font-semibold text-slate-800 focus:outline-none focus:ring-4 focus:ring-orange-200"
+            >
+              <option value="">الكل (الشارع)</option>
+              {streetOptions.map((s) => (
+                <option key={s} value={s}>
+                  شارع {s}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
 
       <Gallery
         images={compoundImages}
@@ -190,27 +215,27 @@ export default function App() {
         onNavigate={setGalleryIndex}
       />
 
-      <main className="mx-auto max-w-2xl px-4 pt-4">
+      <main className="mx-auto max-w-2xl px-4 pt-2">
         {filteredPeople.length === 0 ? (
           <p className="mt-16 text-center text-xl text-slate-400">لا توجد نتائج</p>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-4">
             {filteredPeople.map((person) => (
               <li key={person.id}>
                 <button
                   onClick={() => handleCardClick(person)}
-                  className={`w-full rounded-2xl bg-white p-4 text-right shadow-sm transition ${
+                  className={`w-full rounded-3xl border border-slate-100 bg-white p-5 text-right shadow-sm transition ${
                     unlocked ? "active:scale-[0.98] active:bg-slate-50" : "cursor-not-allowed"
                   }`}
                 >
                   <p
-                    className={`text-xl font-bold text-slate-800 ${
+                    className={`text-2xl font-extrabold text-slate-800 ${
                       unlocked ? "" : "select-none blur-md"
                     }`}
                   >
                     {unlocked ? person.name : NAME_MASK}
                   </p>
-                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-slate-500">
+                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-base text-slate-500">
                     {person.mobile && (
                       <span className="flex items-center gap-1.5" dir="ltr">
                         <Phone size={16} className="shrink-0" />
@@ -244,7 +269,7 @@ export default function App() {
           href="https://webistrydev.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium tracking-wide text-slate-400 transition hover:text-teal-600"
+          className="text-sm font-medium tracking-wide text-slate-400 transition hover:text-sky-600"
         >
           WebistryDev
         </a>
@@ -252,7 +277,7 @@ export default function App() {
 
       <button
         onClick={handleAddClick}
-        className="fixed bottom-6 end-6 z-20 flex h-16 w-16 items-center justify-center rounded-full bg-teal-600 text-white shadow-lg transition hover:bg-teal-700 active:scale-95"
+        className="fixed bottom-6 end-6 z-20 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-sky-600 to-blue-800 text-white shadow-lg shadow-sky-950/30 transition hover:from-sky-500 hover:to-blue-700 active:scale-95"
         aria-label="إضافة شخص جديد"
       >
         <Plus size={32} />
