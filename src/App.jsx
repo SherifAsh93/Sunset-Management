@@ -122,23 +122,21 @@ export default function App() {
       style={{ paddingBottom: `calc(7rem + ${keyboardInset}px)` }}
     >
       <header className="sticky top-0 z-10 bg-gradient-to-b from-blue-900 via-sky-700 to-sky-500 px-4 pb-14 pt-5 shadow-lg">
-        <div className="mb-4 flex justify-end">
-          <div dir="ltr" className="flex items-center gap-3">
-            <a
-              href="https://webistrydev.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="opacity-90 transition hover:opacity-100"
-            >
-              <img src="/webistrydev-logo.svg" alt="WebistryDev" className="h-7 w-7" />
-            </a>
-            <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-lg font-black text-white ring-1 ring-white/20">
-                S
-              </span>
-              <span className="text-xl font-extrabold tracking-tight text-white">Sunset</span>
-            </div>
-          </div>
+        <div className="relative mb-4 flex items-center justify-center">
+          <a
+            href="https://webistrydev.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-y-0 end-0 flex items-center opacity-90 transition hover:opacity-100"
+          >
+            <img src="/webistrydev-logo.svg" alt="WebistryDev" className="h-7 w-7" />
+          </a>
+          <span
+            className="text-xl italic tracking-wide text-amber-100"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Sunset
+          </span>
         </div>
 
         <div className="mb-4 flex justify-center">
