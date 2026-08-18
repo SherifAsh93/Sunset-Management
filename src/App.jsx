@@ -244,12 +244,9 @@ export default function App() {
           href="https://webistrydev.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 rounded-full px-3 py-1.5 text-slate-400 transition hover:text-slate-600"
+          className="text-sm font-medium tracking-wide text-slate-400 transition hover:text-teal-600"
         >
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-500">
-            W
-          </span>
-          <span className="text-sm font-medium tracking-wide">WebistryDev</span>
+          WebistryDev
         </a>
       </footer>
 
