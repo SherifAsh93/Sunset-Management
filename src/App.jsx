@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search, Plus, Phone, Building2, Map, Users, Lock, Unlock, X } from "lucide-react";
 import { initialPeople } from "./data";
 import PersonModal from "./components/PersonModal";
@@ -19,7 +19,24 @@ export default function App() {
   const [showPasswordField, setShowPasswordField] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [toast, setToast] = useState(null);
+  const [keyboardInset, setKeyboardInset] = useState(0);
   const toastTimer = useRef(null);
+
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    function handleViewportChange() {
+      const inset = window.innerHeight - vv.height - vv.offsetTop;
+      setKeyboardInset(Math.max(0, Math.round(inset)));
+    }
+    vv.addEventListener("resize", handleViewportChange);
+    vv.addEventListener("scroll", handleViewportChange);
+    handleViewportChange();
+    return () => {
+      vv.removeEventListener("resize", handleViewportChange);
+      vv.removeEventListener("scroll", handleViewportChange);
+    };
+  }, []);
 
   function showToast(message) {
     setToast(message);
@@ -100,7 +117,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-dvh bg-slate-50 pb-28">
+    <div
+      className="min-h-dvh bg-slate-50"
+      style={{ paddingBottom: `calc(7rem + ${keyboardInset}px)` }}
+    >
       <header className="sticky top-0 z-10 bg-gradient-to-b from-blue-900 via-sky-700 to-sky-500 px-4 pb-14 pt-5 shadow-lg">
         <div className="mb-4 flex justify-end">
           <div dir="ltr" className="flex items-center gap-2">
@@ -269,9 +289,9 @@ export default function App() {
           href="https://webistrydev.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium tracking-wide text-slate-400 transition hover:text-sky-600"
+          className="opacity-70 transition hover:opacity-100"
         >
-          WebistryDev
+          <img src="/webistrydev-logo.svg" alt="WebistryDev" className="h-7 w-7" />
         </a>
       </footer>
 

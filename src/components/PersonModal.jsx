@@ -7,6 +7,9 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
   const [building, setBuilding] = useState(person?.building?.toString() ?? "");
   const [street, setStreet] = useState(person?.street?.toString() ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(
+    () => window.visualViewport?.height ?? window.innerHeight
+  );
 
   useEffect(() => {
     setName(person?.name ?? "");
@@ -14,6 +17,17 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
     setBuilding(person?.building?.toString() ?? "");
     setStreet(person?.street?.toString() ?? "");
   }, [person]);
+
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    function handleResize() {
+      setViewportHeight(vv.height);
+    }
+    vv.addEventListener("resize", handleResize);
+    handleResize();
+    return () => vv.removeEventListener("resize", handleResize);
+  }, []);
 
   const isValid = name.trim() !== "";
 
@@ -37,11 +51,12 @@ export default function PersonModal({ mode, person, onClose, onSave, onDelete })
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center"
+      className="fixed inset-x-0 top-0 z-50 flex items-end justify-center bg-black/50 sm:items-center"
+      style={{ height: viewportHeight }}
       onClick={onClose}
     >
       <div
-        className="flex max-h-[85dvh] w-full max-w-md flex-col overflow-y-auto rounded-t-3xl bg-white p-6 shadow-xl sm:rounded-3xl"
+        className="flex max-h-[85%] w-full max-w-md flex-col overflow-y-auto rounded-t-3xl bg-white p-6 shadow-xl sm:rounded-3xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-6 flex items-center justify-between">
