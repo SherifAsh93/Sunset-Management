@@ -121,7 +121,7 @@ export default function App() {
       className="min-h-dvh bg-slate-50"
       style={{ paddingBottom: `calc(7rem + ${keyboardInset}px)` }}
     >
-      <header className="sticky top-0 z-10 bg-gradient-to-b from-blue-900 via-sky-700 to-sky-500 px-4 pb-14 pt-5 shadow-lg">
+      <header className="sticky top-0 z-10 bg-gradient-to-b from-blue-900 via-sky-700 to-sky-500 px-4 pb-6 pt-5 shadow-lg">
         <div className="relative mb-4 flex items-center justify-center">
           <a
             href="https://webistrydev.com"
@@ -193,7 +193,15 @@ export default function App() {
         </div>
       </header>
 
-      <div className="relative z-20 mx-auto -mt-8 max-w-2xl px-4">
+      <Gallery
+        images={compoundImages}
+        activeIndex={galleryIndex}
+        onOpen={setGalleryIndex}
+        onClose={() => setGalleryIndex(null)}
+        onNavigate={setGalleryIndex}
+      />
+
+      <div className="relative z-20 mx-auto mt-2 max-w-2xl px-4">
         <div className="rounded-3xl border border-slate-100 bg-white p-4 shadow-xl shadow-slate-900/10">
           <div className="relative">
             <Search className="absolute top-1/2 right-4 -translate-y-1/2 text-slate-400" size={22} />
@@ -234,14 +242,6 @@ export default function App() {
           </div>
         </div>
       </div>
-
-      <Gallery
-        images={compoundImages}
-        activeIndex={galleryIndex}
-        onOpen={setGalleryIndex}
-        onClose={() => setGalleryIndex(null)}
-        onNavigate={setGalleryIndex}
-      />
 
       <main className="mx-auto max-w-2xl px-4 pt-2">
         {filteredPeople.length === 0 ? (
